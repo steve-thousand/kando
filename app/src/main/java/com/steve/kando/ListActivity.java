@@ -16,6 +16,7 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity implements ToDoItemsUpdatedListener {
 
     private ToDoItemService toDoItemService;
+    private ToDoItemAdapter toDoItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,9 @@ public class ListActivity extends AppCompatActivity implements ToDoItemsUpdatedL
         try {
             toDoItemService = new LocalToDoItemService(this);
             List<ToDoItem> toDoItems = toDoItemService.getToDoItems();
-            buildListView(toDoItems);
+            toDoItemAdapter = new ToDoItemAdapter(this, toDoItems);
+            ListView listView = findViewById(R.id.todo_list_view);
+            listView.setAdapter(toDoItemAdapter);
         } catch (DataException e) {
             //todo anything
         }
@@ -39,19 +42,13 @@ public class ListActivity extends AppCompatActivity implements ToDoItemsUpdatedL
         });
     }
 
-    private void buildListView(List<ToDoItem> toDoItems){
-        ListView listView = findViewById(R.id.todo_list_view);
-        final ToDoItemAdapter toDoItemAdapter = new ToDoItemAdapter(this, toDoItems);
-        listView.setAdapter(toDoItemAdapter);
-    }
-
     @Override
     public void onToDoItemAdded(ToDoItem toDoItem) {
         try {
             List<ToDoItem> toDoItems = toDoItemService.getToDoItems();
             toDoItems.add(toDoItem);
             toDoItemService.saveToDoItems(toDoItems);
-            buildListView(toDoItems);
+            toDoItemAdapter.add(toDoItem);
         } catch (DataException e) {
             //todo anything
         }
@@ -63,7 +60,7 @@ public class ListActivity extends AppCompatActivity implements ToDoItemsUpdatedL
             List<ToDoItem> toDoItems = toDoItemService.getToDoItems();
             toDoItems.remove(position);
             toDoItemService.saveToDoItems(toDoItems);
-            buildListView(toDoItems);
+            toDoItemAdapter.remove(toDoItemAdapter.getItem(position));
         } catch (DataException e) {
             //todo anything
         }
