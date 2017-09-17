@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Kando</string>
+    <string name="add_button_text">add</string>
+    <string name="done_button_text">done</string>
+</resources>
