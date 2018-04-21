@@ -1,11 +1,12 @@
 package com.steve.kando;
 
-import java.util.Date;
+import org.joda.time.LocalDateTime;
 
 public class ToDoItem {
 
+
     private String label;
-    private Date createDate;
+    private LocalDateTime createDate;
 
     public String getLabel() {
         return label;
@@ -15,11 +16,11 @@ public class ToDoItem {
         this.label = label;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 

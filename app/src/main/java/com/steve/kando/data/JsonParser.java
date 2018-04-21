@@ -2,12 +2,12 @@ package com.steve.kando.data;
 
 import com.steve.kando.ToDoItem;
 
+import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class JsonParser {
@@ -29,7 +29,7 @@ public class JsonParser {
                 jsonObject.put(PARSER_VERSION_KEY, PARSER_VERSION);
                 jsonObject.put(LABEL_KEY, toDoitem.getLabel());
                 if(toDoitem.getCreateDate() != null) {
-                    jsonObject.put(CREATE_DATE_KEY, toDoitem.getCreateDate().getTime());
+                    jsonObject.put(CREATE_DATE_KEY, toDoitem.getCreateDate().toDateTime().getMillis());
                 }
                 jsonArray.put(jsonObject);
             }
@@ -51,7 +51,7 @@ public class JsonParser {
                 ToDoItem toDoItem = new ToDoItem();
                 toDoItem.setLabel(jsonObject.getString(LABEL_KEY));
                 if(jsonObject.has(CREATE_DATE_KEY)) {
-                    toDoItem.setCreateDate(new Date(jsonObject.getLong(CREATE_DATE_KEY)));
+                    toDoItem.setCreateDate(new LocalDateTime(jsonObject.getLong(CREATE_DATE_KEY)));
                 }
                 toDoItems.add(toDoItem);
             }
