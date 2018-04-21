@@ -12,17 +12,55 @@ import com.steve.kando.data.ToDoItemService;
 import com.steve.kando.view.ToDoItemAddView;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ListActivity extends AppCompatActivity implements ToDoItemsUpdatedListener {
 
     private ToDoItemService toDoItemService;
     private ToDoItemAdapter toDoItemAdapter;
 
+    private Timer autoUpdate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        drawToDoItems();
+
+        FloatingActionButton addButton = findViewById(R.id.add_item_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ToDoItemAddView(ListActivity.this);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        autoUpdate = new Timer();
+        autoUpdate.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        drawToDoItems();
+                    }
+                });
+            }
+        }, 0, 60000); // updates each 60 secs
+    }
+
+    @Override
+    public void onPause() {
+        autoUpdate.cancel();
+        super.onPause();
+    }
+
+    private void drawToDoItems() {
         try {
             toDoItemService = new LocalToDoItemService(this);
             List<ToDoItem> toDoItems = toDoItemService.getToDoItems();
@@ -32,14 +70,6 @@ public class ListActivity extends AppCompatActivity implements ToDoItemsUpdatedL
         } catch (DataException e) {
             //todo anything
         }
-
-        FloatingActionButton addButton = findViewById(R.id.add_item_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new ToDoItemAddView(ListActivity.this);
-            }
-        });
     }
 
     @Override

@@ -55,6 +55,9 @@ public class ToDoItemAdapter extends ArrayAdapter<ToDoItem> {
         TextView labelView = swipeLayout.findViewById(R.id.label);
         labelView.setText(toDoItem.getLabel());
 
+        TextView createdDateView = swipeLayout.findViewById(R.id.createdDate);
+        createdDateView.setText(DateUtils.getAgeFromDate(toDoItem.getCreateDate()));
+
         Button button = swipeLayout.findViewById(R.id.delete);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -10,7 +10,7 @@ import com.steve.kando.ListActivity;
 import com.steve.kando.ToDoItem;
 import com.steve.kando.ToDoItemsUpdatedListener;
 
-import java.util.Date;
+import org.joda.time.LocalDateTime;
 
 public class ToDoItemAddView extends AlertDialog implements DialogInterface.OnClickListener {
 
@@ -42,7 +42,7 @@ public class ToDoItemAddView extends AlertDialog implements DialogInterface.OnCl
         String itemLabel = input.getText().toString();
         ToDoItem toDoItem = new ToDoItem();
         toDoItem.setLabel(itemLabel);
-        toDoItem.setCreateDate(new Date());
+        toDoItem.setCreateDate(LocalDateTime.now());
         toDoItemsUpdatedListener.onToDoItemAdded(toDoItem);
     }
 }
